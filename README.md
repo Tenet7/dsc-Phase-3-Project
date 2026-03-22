@@ -288,10 +288,115 @@ Now that we have balanced the dataset, we can proceed to the actual modeling. We
 and build other models sequentially.
 ### 4.2. Logistic Regression.
 Logistic Regression model accuracy: 0.7823343848580442
-Logistic Regression classification report
- precision recall f1-score support
- 0 0.95 0.79 0.86 546
- 1 0.36 0.76 0.49 88
- accuracy 0.78 634
- macro avg 0.66 0.77 0.68 634
-weighted avg 0.87 0.78 0.81 634
+<img width="407" height="348" alt="image" src="https://github.com/user-attachments/assets/13da4899-cb4c-44e1-bae0-dd5261572802" />
+
+### 4.3. Decision Tree Classifier
+<img width="407" height="348" alt="image" src="https://github.com/user-attachments/assets/40f13388-f705-42bf-9c3b-c90e1d0be7a3" />
+
+### 4.4. Random Forest Classifier
+<img width="407" height="348" alt="image" src="https://github.com/user-attachments/assets/4630ff17-1919-43d0-a56d-10b53d6636e4" />
+
+The Random Forest model has a recall score of about 0.73, which is lower than the recall scores of the Decision Tree and Logistic Regression
+models. This implies that out of all the customers who churned from the company, the model was able to predict 73% of them correctly.
+From the confusion matrix plot, the true positive and true negative have the highest values, implying that the model is making correct predictions
+more frequently than incorrect predictions. This also shows that the model is not overfitting (i.e. performing poorly on unseen test data)
+### 4.6. K-Nearest Neighbor Classifier
+<img width="407" height="348" alt="image" src="https://github.com/user-attachments/assets/0b71fe1f-b774-4594-a8e9-3a5b4b8dd407" />
+
+The K-Nearest Neighbor model has a recall score of about 0.4, which is much lower than the recall scores of the other models. This implies that out
+of all the customers who churned from the company, the model was able to predict 40% of them correctly, which is a very low prediction rate, lower
+than average (50%).
+From the confusion matrix plot, however, the true positive and true negative have the highest values, implying that the model, despite having a lower
+recall, is still making correct predictions more frequently than incorrect predictions.
+### 4.7. Gradient Boosting Classifier
+<img width="407" height="348" alt="image" src="https://github.com/user-attachments/assets/b188da52-0f08-46b9-9df4-ef5cf73ed370" />
+
+The Gradient Boosting model has a recall score of about 0.81, which is higher than the recall scores of the other models. This implies that out of all
+the customers who churned from the company, the model was able to predict 81% of them correctly, which is the best prediction rate thus far.
+From the confusion matrix plot, the true positive and true negative have the highest values, implying that the model is making correct predictions
+more frequently than incorrect predictions. This also shows that the model is not overfitting (i.e. performing poorly on unseen test data)
+## 5. Model Evaluation
+In this section, we will evaluate the model performance, and pick the best two, which we will perform hyperparameter tuning on, to select the best
+performing model. As I had mentioned before, we will use recall and ROC-AUC Curve, to measure model performance.
+### 5.1. ROC Curve
+An ROC (Receiver Operating Characteristic) curve is a graphical representation used to evaluate the performance of a binary classification model. It
+plots the True Positive Rate (TPR) (Recall) against the False Positive Rate (FPR) at various threshold settings. The curve illustrates how well a
+model distinguishes between the two classes.
+A model with a good performance will have a curve that bows toward the top-left corner of the plot. The Area Under the Curve (AUC) provides a
+single number summary of performance - the closer the AUC is to 1, the better the model. An ROC curve is useful for comparing multiple models'
+diagnostic ability.
+We will plot the ROC curves of all the 6 models and compare the AUC scores.
+<img width="708" height="492" alt="image" src="https://github.com/user-attachments/assets/e2d38154-5501-43a7-8417-1f6bde9e6bb7" />
+
+From the ROC Curve plot, we can see that Random Forest, XGBoost, and Gradient Boosting have the highest AUC scores, with Gradient Boosting
+having an AUC score of 0.912, and XGBoost having an AUC score of 0.910. K-Nearest Neighbors has the lowest AUC score of 0.651
+### 5.2. Recall Score
+Recall is a performance metric that represents the proportion of correctly predicted positive observations out of all actual positive observations. In
+other terms:
+Of all the actual positive items, how many did the model correctly identify?
+A higher recall means very few false negatives, which implies that the model makes correct predictions more than false predictions, which is what
+we are after anyway.
+In this section, we will create a table that has each model with its recall score. This will help in determining the top performing models on unseen
+data.
+From the analysis on recall and ROC, we can conclude that the Gradient Boosting is the highest performing model, with a recall score of 0.807, and
+an AUC score of 0.912, follwoed by the XGBoost classifier, with a recall score of 0.795, and an AUC score of 0.910. We will perform hyperparameter
+tuning on these two models to try and improve the performance of each model, and again compare and see which model performs the best, based
+on those two metrics.
+But before we go to hyperparameter tuning, we can check the top important features in the Gradient Boosting classifier
+<img width="708" height="420" alt="image" src="https://github.com/user-attachments/assets/44b5b016-42b4-4de3-9a34-dac9f54536d6" />
+
+From the plot, the most important features for the model are Customer_Service_Calls, Total_Day_Charge, and International_Plan_Yes
+## 6. Model Hyperparameter Tuning.
+Model hyperparameter tuning in classification machine learning entails optimizing the external configuration settings (hyperparameters) that guide
+the training process of a model. These parameters, such as the regularization strength in logistic regression, the number of neighbors in K-NN, or
+the maximum depth in decision trees, are not learned from data, but significantly influence model performance. Proper tuning ensures that the model
+generalizes well to unseen data, avoids overfitting, and achieves optimal performance metrics such as accuracy, recall, and f1 score.
+Two common methods for hyperparameter tuning are Grid Search and Random Search:
+Grid Search exhaustively tests every possible combination of specified hyperparameter values. For example, if tuning two hyperparameters with five
+options each, grid search will evaluate all 25 combinations. While this ensures that the optimal combination (within the grid) is found, it becomes
+computationally expensive and inefficient as the number of parameters or their value ranges increase.
+Random Search on te other hand samples combinations of hyperparameters at random. While this doesn't guarantee evaluating all possibilities, it
+often determines a good (or even optimal) combination with fewer iterations, especially when only a few hyperparameters significantly affect model
+performance. This makes it faster and more scalable for high-dimensional search spaces.
+Comparison
+Grid Search is ideal when the hyperparameter space is small and well-defined. Random Search is better suited for large, complex, or lessunderstood search spaces In practice, Random Search if often more efficient, and can yield nearly optimal results in a fraction of the time, making it
+more suitable for many real-world classification tasks
+In this section, we will mainly use Random Search to obtain the best hyperparameters for training our model: Gradient Boosting
+### 6.1. Gradient Boosting Hyperparameter Tuning
+We will first tune the Gradient Boosting model. The main parameters we will look out for in the tuning process are:
+Learning rate: Controls the contribution of each tree to the final prediction. A smaller value makes the model more robust, but requires more
+estimators to achieve high performance. By default, learning_rate = 0.1
+n_estimators: Defines the number of boosting iterations (trees) to be added. More estimators usually lead to better model performance, but also
+increases the risk of overfitting. By default, n_estimators = 100
+max_depth: Specified the maximum depth of each individual tree. Shallow trees might underfit, while deeper trees can overfit. It is crucial to find the
+right depth. By default, max_depth = None
+From the random search process, the best model hyperparameters we have obtained are:
+n_estimators = 300 max_depth = 9 learning_rate = 0.08 We well update our Gradient Boosting model with these hyperparameters and monitor its
+performance.
+From the classification report, the recall score for the tuned Gradient Boosting model has remained the same from the first Gradient Boosting model,
+which had a recall score of 0.81. This means that the model can predict 81% of the actual postive predictions correctly.
+In addition, the number of true positives and negatives has increased in the tuned model, implying that the tuned model has a higher rate of making
+true predictions compared to the initial model.
+We can also compute the AUC score and plot the ROC curve for the tuned model to see whether there performance has improved.
+From the ROC-AUC computation, the AUC score for the tuned Gradient Boosting classifier has increased from 0.912 to 0.921 which is a very
+significant increase. This increases the model's capability to distinguish between the classes by 0.009, which is 0.9%.
+## 7. 📝 Conclusion.
+From our prediction modeling analysis, The XGBoost Classifier model had a recall score of 0.82, while the Gradient Boosting model achieved a
+recall score of 0.81. However, the Gradient Boosting model had a higher AUC score of 0.921, while the XGBoost model had an AUC score of 0.911.
+We were able to meet all our set objectives, which were to build a customer churn prediction model with a recall score of 0.8 and above, and to
+identify the key features that contribute significantly to customer churn, which include Customer_Service_Calls, Total_Day_Charge, and
+International_Plan. Due to the nature of the project and the prediction problem, I would recommend the XGBoost classifier model with a higher recall
+for predicting customer churn rates at SyriaTel Telecommunication company
+# 💼 Business Recommendations
+1. Targeted Incentives for High-Churn Area Codes Customers in area codes 415 and 510 exhibit higher churn tendencies from my analysis.
+Offering specialized discounts, loyalty rewards, or exclusive promotions in these regions can serve as an effective incentive to retain these
+customers.
+2. Enhance Customer Service Efficiency A high amount of customer service interactions with customers is seen to increase churn. Investing in
+comprehensive training sessions for support stuff, and implmenting better issue/conflict resolution frameworks can significantly boost customer
+satisfation, and in turn minimize the rate of customer churn.
+3. State-Specific Retention Strategies States such as Texas, New Jersey, Maryland, Miami, and New York reported an above-average churn rate.
+To mitigate this challenge, developing localized market efforts, personalized engagement strategies, and enhanced customer support in these
+regions would aid in strengthening customer loyalty and retention.
+4. Review and Optimize Call Rate Plans Majority of the customers who churn experience high day, evening, night and international call rates.
+Reassessing the pricing model, and introducing more competitive/bundled plans could make the services more attractive, and cost-effective for
+current users.
