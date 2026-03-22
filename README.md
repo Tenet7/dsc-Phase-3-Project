@@ -96,4 +96,56 @@ Churn Distribution
 In this section, we will look at the distribution of the unique values in the Churn column.
 <img width="887" height="526" alt="image" src="https://github.com/user-attachments/assets/7b885118-c898-4352-b862-1e744cea62ac" />
 
+From the bar plot, out of the 3333 customers in the dataset, 483 have churned from the company(i.e. terminated their contract), which is about 14.5
+% of the total customers. This indicates that the target variable is highly imbalanced. This imbalance can negatively impact the performance of the
+prediction model by influencing the model to make false predictions. Therefore, this class imbalance should be handled before modeling.
+Area Code Distribution
+In this section, we want to see how the distribution of the customers is with regards to the area code. This will aid in determining the area codes that
+have the most customers
+<img width="778" height="488" alt="image" src="https://github.com/user-attachments/assets/95d25234-4c20-4519-83aa-cb219b6f16a9" />
+
+From the plot, area code 415 has a higher number of customers with about 1655 customers, which accounts for approximately 49.7% of the total
+number of customers. Area codes 408 and 510 have a close number of customers, with area code 408 having 838 customers and area code 510
+having 840 customers.
+The uneven customer distribution suggests that SyriaTel has a larger customer base concentrated in specific regions. This could indicate:
+Stronger marketing or network presence in those regions.
+Regional preferences for SyriaTel services.
+Distribution of categorical features
+In this section, we will explore three main categorical features:
+State
+International_Plan
+Voice_Mail_Plan
+We created a function plot_categorical_distributions in utility.py that will take in a dataframe and feature, and return the distribution of the input
+feature.
+We will start with analyzing the State feature.
+<img width="1117" height="393" alt="image" src="https://github.com/user-attachments/assets/b3313f45-ec87-4264-98e3-1725b3eb711b" />
+
+From the plot, the top 5 states from where majority of the customers reside are:
+West Virginia (WV): The state with the highest number of customers (106)
+Minnesota (MN): Has about 84 customers
+New York (NY): Has about 83 customers
+Alabama (AL): Has about 80 customers
+Ohio (OH): Has about 78 customers
+Next we will plot the distribution of the International Plan feature
+<img width="1120" height="395" alt="image" src="https://github.com/user-attachments/assets/097dac3b-078a-4b53-887b-2a1cfb5e6d49" />
+
+From the plot, about 323 customers, which is about 9.7 % of the total customers have an international plan.
+Finally, we will plot the distribution of the Voice_Mail_Plan feature.
+<img width="1120" height="393" alt="image" src="https://github.com/user-attachments/assets/f663718c-0402-4f84-accc-ebaf30f3590e" />
+
+From the plot, 922 customers, which is about 27.7% of the total number of customers have a voice mail plan.
+Numerical Features Distribution
+In this section, we will plot the distributions of all the numerical features, with Kernel Density Estimation (KDE) curves. This will aid in:
+Understanding customer usage patterns, with features like Total_Day_Minutes. This will inform the usage of the services by the customers.
+Detecting outliers in the dataset. For example, outliers in total charge or minutes could indicate erratic usage linked to churn.
+We created a function numerical_distributions in utility.py, that takes in the dataframe, and a list of numerical features, and returns the KDE
+distribution plots of each feature.
+<img width="1140" height="1428" alt="image" src="https://github.com/user-attachments/assets/ae1eaaed-db30-40e0-bf4b-98a8a2736b07" />
+
+From the plot, all the features, apart from Customer_Service_Calls and Number_Vmail_Messages follow a Normal distribution. Despite the
+Total_Intl_Calls feature being skewed to the right, it is still normally distributed.
+
+
+
+
 
